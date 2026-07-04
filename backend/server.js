@@ -9,20 +9,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// routes
+const userRoutes = require("./routes/userRoutes");
+const animalRoutes = require("./routes/animalRoutes");
+
+app.use("/api/users", userRoutes);
+app.use("/api/animals", animalRoutes);
+
 // test route
 app.get("/", (req, res) => {
-  res.send("Backend is working ");
+  res.send("Backend is working 🚀");
 });
 
-// start server
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// MongoDB + server start
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
+  .then(() => {
+    console.log("MongoDB connected");
+
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
   .catch((err) => console.log(err));
-  
-  const userRoutes = require('./routes/userRoutes');
-app.use('/api/users', userRoutes);
