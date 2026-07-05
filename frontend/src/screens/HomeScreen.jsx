@@ -29,18 +29,21 @@ function HomeScreen() {
           name="Bobi"
           image={dog1}
            showDetailsButton={false}
+             showActions={false}
         />
 
         <AnimalCard
           name="Maza"
           image={cat1}
           showDetailsButton={false}
+         showActions={false}
         />
 
         <AnimalCard
           name="Rex"
           image={dog2}
           showDetailsButton={false}
+          showActions={false}
         />
       </div>
     </div>

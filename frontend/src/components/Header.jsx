@@ -9,7 +9,7 @@ function Header() {
 
           <LinkContainer to="/">
             <Navbar.Brand>
-              🐾 Animal Shelter
+              🐾 Pomozi krznenim prijateljima da pronađu svoj dom!
             </Navbar.Brand>
           </LinkContainer>
 
