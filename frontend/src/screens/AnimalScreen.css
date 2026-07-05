@@ -1,0 +1,109 @@
+.animals-page {
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.animals-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* OVERLAY */
+.details-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999; /* 🔥 BITNO da bude iznad svega */
+}
+
+/* CARD */
+.details-card {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+
+  width: 340px;
+  max-width: 90%;
+
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* IMAGE */
+.details-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* TITLE */
+.details-card h2 {
+  margin: 10px 0;
+}
+
+/* CLOSE X */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: white;
+  color: black;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+  z-index: 10000; /* 🔥 da bude iznad slike */
+}
+
+/* hover efekat */
+.close-btn:hover {
+  background: red;
+  color: white;
+}
+
+/* bottom button (ako ga dodaš kasnije) */
+.details-card button {
+  margin-top: 15px;
+  padding: 8px 12px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #4CAF50;
+  color: white;
+
+  cursor: pointer;
+}
+
+.details-card button:hover {
+  background: #45a049;
+}
