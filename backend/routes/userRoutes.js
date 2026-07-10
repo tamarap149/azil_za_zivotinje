@@ -1,8 +1,21 @@
 const express = require("express");
-const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("User routes rade 🚀");
-});
+const router = express.Router();
+const { protect } = require("../middleware/authMiddleware");
+
+const {
+    registerUser,
+    loginUser
+} = require("../controllers/userController");
+
+
+
+router.post("/register", registerUser);
+
+router.post("/login", loginUser);
+
+router.get("/profile", protect, getUserProfile);
+
+
 
 module.exports = router;

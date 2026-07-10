@@ -1,10 +1,13 @@
 import { Container } from "react-bootstrap";
 import "./HomeScreen.css";
+import { useNavigate } from "react-router-dom"; 
 import AnimalCard from "../components/AnimalCard";
 import dog1 from "../assets/images/dog1.jpeg";
 import dog2 from "../assets/images/dog2.jpeg";
 import cat1 from "../assets/images/cat1.jpeg";
+
 function HomeScreen() {
+  const navigate = useNavigate(); 
   const styles = {
     container: {
       display: "flex",
@@ -21,7 +24,9 @@ function HomeScreen() {
         <h1>Azil za životinje 🐾</h1>
         <p>Udomi, pomozi, spasi</p>
 
-        <button>Pregledaj životinje</button>
+        <button onClick={() => navigate("/animals")}>
+          Pregledaj životinje
+        </button>
       </div>
 
       <div style={styles.container}>

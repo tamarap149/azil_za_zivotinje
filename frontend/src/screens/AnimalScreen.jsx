@@ -103,6 +103,7 @@ function AnimalsScreen() {
             status={animal.status}
             image={animal.image}
             onDetails={() => setSelectedAnimal(animal)}
+            onLogin={() => navigate("/login")}
           />
         ))}
       </div>
