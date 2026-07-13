@@ -1,65 +1,114 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/uploadMiddleware");
 const Animal = require("../models/Animal");
 
+const {
+    createAnimal,
+    getAnimals,
+    getAnimalById
+} = require("../controllers/animalController");
 
-// 🟢 CREATE - dodaj životinju
-router.post("/", async (req, res) => {
-  try {
-    const newAnimal = new Animal(req.body);
-    const savedAnimal = await newAnimal.save();
-    res.status(201).json(savedAnimal);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+
+// Dodavanje životinje
+router.post(
+    "/",
+    upload.single("image"),
+    createAnimal
+);
+
+
+// Prikaz svih životinja
+router.get("/", getAnimals);
+
+
+// Prikaz jedne životinje
+router.get("/:id", getAnimalById);
+
+
+// Izmena životinje
+router.put(
+    "/:id",
+    upload.single("image"),
+    async (req, res) => {
+        console.log("FAJL:", req.file);
+        console.log("BODY:", req.body);
+
+    try {
+
+        const animal = await Animal.findById(req.params.id);
+
+        if (!animal) {
+
+            return res.status(404).json({
+                message: "Životinja nije pronađena."
+            });
+
+        }
+
+
+        animal.name = req.body.name;
+        animal.type = req.body.type;
+        animal.age = req.body.age;
+        animal.description = req.body.description;
+        animal.status = req.body.status;
+        if(req.file){
+
+    animal.image = `/uploads/${req.file.filename}`;
+
+}
+
+
+        const updatedAnimal = await animal.save();
+
+
+        res.json(updatedAnimal);
+
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+
 });
 
 
-// 🟢 READ - sve životinje
-router.get("/", async (req, res) => {
-  try {
-    const animals = await Animal.find();
-    res.json(animals);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-
-// 🟢 READ - jedna životinja
-router.get("/:id", async (req, res) => {
-  try {
-    const animal = await Animal.findById(req.params.id);
-    res.json(animal);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-
-// 🟡 UPDATE - izmena
-router.put("/:id", async (req, res) => {
-  try {
-    const updatedAnimal = await Animal.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-    res.json(updatedAnimal);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-
-// 🔴 DELETE - brisanje
+// Brisanje životinje
 router.delete("/:id", async (req, res) => {
-  try {
-    await Animal.findByIdAndDelete(req.params.id);
-    res.json("Animal deleted");
-  } catch (err) {
-    res.status(500).json(err);
-  }
+
+    try {
+
+        const animal = await Animal.findById(req.params.id);
+
+
+        if (!animal) {
+
+            return res.status(404).json({
+                message: "Životinja nije pronađena."
+            });
+
+        }
+
+
+        await animal.deleteOne();
+
+
+        res.json({
+            message: "Životinja uspešno obrisana."
+        });
+
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+
 });
 
 

@@ -9,44 +9,87 @@ function AnimalCard({
   showDetailsButton = true,
   showActions = true,
 }) {
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  const translateType = (type) => {
+    if (type === "dog") return "Pas";
+    if (type === "cat") return "Mačka";
+    return type;
+  };
+
+  const translateStatus = (status) => {
+    if (status === "available") return "Dostupan";
+    if (status === "adopted") return "Udomljen";
+    if (status === "pending") return "Na čekanju";
+
+    return status;
+  };
+
   return (
     <div style={styles.card}>
-      <img src={image} alt={name} style={styles.image} />
+      <img
+        src={
+          image?.startsWith("/uploads")
+            ? `http://localhost:5000${image}`
+            : image
+        }
+        alt={name}
+        style={styles.image}
+      />
 
       <div style={styles.info}>
         <h3 style={styles.name}>{name}</h3>
 
-        {type && <p>{type}</p>}
+        {type && <p>{translateType(type)}</p>}
+
         {age && <p>{age}</p>}
 
         {status && (
           <span
             style={{
-              color: status === "Udomljen" ? "green" : "orange",
+              color:
+                status === "adopted"
+                  ? "green"
+                  : "orange",
               fontWeight: "bold",
             }}
           >
-            {status}
+            {translateStatus(status)}
           </span>
         )}
 
         {showActions && (
           <>
             {showDetailsButton && (
-              <button style={styles.button} onClick={onDetails}>
+              <button
+                style={styles.button}
+                onClick={onDetails}
+              >
                 Detalji
               </button>
             )}
 
-            {status && status !== "Udomljen" ? (
-              <button style={styles.loginButton} onClick={onLogin}>
-                Prijavi se za udomljavanje
-              </button>
-            ) : status ? (
+            {status === "available" ? (
+              isLoggedIn ? (
+                <button
+                  style={styles.button}
+                  onClick={onDetails}
+                >
+                  ❤️ Udomi životinju
+                </button>
+              ) : (
+                <button
+                  style={styles.loginButton}
+                  onClick={onLogin}
+                >
+                  Prijavi se za udomljavanje
+                </button>
+              )
+            ) : (
               <p style={styles.adoptedText}>
                 🏡 Ova životinja je već udomljena.
               </p>
-            ) : null}
+            )}
           </>
         )}
       </div>

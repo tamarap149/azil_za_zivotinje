@@ -20,3 +20,56 @@ button {
   border-radius: 8px;
 }
 
+.info-section{
+
+display:flex;
+justify-content:center;
+gap:30px;
+margin:40px 0;
+flex-wrap:wrap;
+
+}
+
+
+.info-card{
+
+padding:25px;
+border-radius:15px;
+text-align:center;
+background:#f8f9fa;
+width:200px;
+
+}
+
+
+
+.weather-box{
+
+margin:40px auto;
+padding:25px;
+max-width:400px;
+text-align:center;
+background:#eef7ff;
+border-radius:20px;
+
+}
+
+
+
+.section-title{
+
+text-align:center;
+margin:40px;
+
+}
+
+
+
+.about-section{
+
+text-align:center;
+padding:40px;
+background:#f8f8f8;
+margin-top:50px;
+
+}

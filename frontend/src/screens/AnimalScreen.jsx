@@ -1,4 +1,6 @@
-import { useState } from "react";
+
+import animalService from "../services/animalService";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AnimalScreen.css";
 import AnimalCard from "../components/AnimalCard";
@@ -17,44 +19,29 @@ function AnimalsScreen() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("Sve");
 
-  const animals = [
-    {
-      id: 1,
-      name: "Bobi",
-      type: "Pas",
-      age: "2 godine",
-      status: "Slobodan",
-      description: "Bobi je miran i druželjubiv pas koji voli ljude.",
-      image: dog1
-    },
-    {
-      id: 2,
-      name: "Maza",
-      type: "Mačka",
-      age: "1 godina",
-      status: "Udomljen",
-      description: "Maza je umiljata mačka koja voli da spava.",
-      image: cat1
-    },
-    {
-      id: 3,
-      name: "Rex",
-      type: "Pas",
-      age: "4 godine",
-      status: "Slobodan",
-      description: "Rex je aktivan pas koji voli šetnje i igru.",
-      image: dog2
-    },
-    {
-      id: 4,
-      name: "Luna",
-      type: "Mačka",
-      age: "3 godine",
-      status: "Slobodan",
-      description: "Luna je mirna i nezavisna mačka.",
-      image: cat2
+  const [animals, setAnimals] = useState([]);
+  useEffect(() => {
+
+  const fetchAnimals = async () => {
+
+    try {
+
+      const data = await animalService.getAnimals();
+
+      setAnimals(data);
+
+    } catch(error) {
+
+      console.log(error);
+
     }
-  ];
+
+  };
+
+
+  fetchAnimals();
+
+}, []);
 
   const filteredAnimals = animals.filter((animal) => {
 
@@ -62,7 +49,9 @@ function AnimalsScreen() {
       animal.name.toLowerCase().includes(search.toLowerCase());
 
     const matchesType =
-      typeFilter === "Sve" || animal.type === typeFilter;
+  typeFilter === "Sve" ||
+  (typeFilter === "Pas" && animal.type === "dog") ||
+  (typeFilter === "Mačka" && animal.type === "cat");
 
     return matchesSearch && matchesType;
   });
@@ -96,13 +85,13 @@ function AnimalsScreen() {
       <div className="animals-grid">
         {filteredAnimals.map((animal) => (
           <AnimalCard
-            key={animal.id}
+            key={animal._id}
             name={animal.name}
             type={animal.type}
             age={animal.age}
             status={animal.status}
             image={animal.image}
-            onDetails={() => setSelectedAnimal(animal)}
+            onDetails={() => navigate(`/animals/${animal._id}`)}
             onLogin={() => navigate("/login")}
           />
         ))}
@@ -120,10 +109,14 @@ function AnimalsScreen() {
               ✖
             </button>
 
-            <img
-              src={selectedAnimal.image}
-              alt={selectedAnimal.name}
-            />
+           <img
+  src={
+    selectedAnimal.image?.startsWith("/uploads")
+      ? `http://localhost:5000${selectedAnimal.image}`
+      : selectedAnimal.image
+  }
+  alt={selectedAnimal.name}
+/>
 
             <h2>{selectedAnimal.name}</h2>
 
